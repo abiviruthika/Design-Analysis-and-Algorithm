@@ -1,0 +1,115 @@
+24bcs127@mepcolinux ex7]$cat huffman.cpp
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n;
+    cout<<"Enter number of symbols: ";
+    cin>>n;
+    char data[100];
+    double freq[200];
+    int parent[200],left[200],right[200];
+    for (int i=0;i<200;i++)
+    {
+        parent[i]=left[i]=right[i]=-1;
+    }
+    cout<<"Enter symbols:\n";
+    for (int i=0;i<n;i++)
+       cin>>data[i];
+    cout<<"Enter frequencies:\n";
+    for (int i=0;i<n;i++)
+       cin>>freq[i];
+    int size=n;
+    while (true)
+    {
+        int min1=-1,min2=-1;
+        for (int i=0;i<size;i++)
+        {
+            if (parent[i] == -1)
+            {
+                if (min1 == -1 || freq[i] < freq[min1])
+                {
+                    min2 = min1;
+                    min1 = i;
+                }
+                else if (min2 == -1 || freq[i] < freq[min2])
+                {
+                    min2 = i;
+                }
+            }
+        }
+        if (min2 == -1) break;
+        freq[size] = freq[min1] + freq[min2];
+        left[size] = min1;
+        right[size] = min2;
+        parent[min1] = size;
+        parent[min2] = size;
+        size++;
+    }
+    cout << "\nHuffman Codes:\n";
+    for (int i = 0; i < n; i++)
+    {
+        cout << data[i] << " : ";
+        int code[50], k = 0;
+        int curr = i;
+        while (parent[curr] != -1)
+        {
+            int p = parent[curr];
+            if (left[p] == curr) code[k++] = 0;
+            else code[k++] = 1;
+            curr = p;
+        }
+        for (int j = k - 1; j >= 0; j--)
+           cout << code[j];
+        cout << endl;
+    }
+    string Str;
+    cout << "\nEnter the string to encode: ";
+    cin >> Str;
+    cout << "Encoded string: ";
+    for (int s = 0; s < Str.length(); s++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (data[i] == Str[s])
+            {
+                int curr = i;
+                string Code = "";
+                while (parent[curr] != -1)
+                {
+                    int p = parent[curr];
+                    if (left[p] == curr)
+                       Code = "0" + Code;
+                    else
+                       Code = "1" + Code;
+                    curr = p;
+                }
+                cout << Code;
+                break;
+            }
+        }
+    }
+    cout << endl;
+    return 0;
+}
+[24bcs127@mepcolinux ex7]$./a.out
+Enter number of symbols: 4
+Enter symbols:
+k
+a
+v
+i
+Enter frequencies:
+0.4
+0.6
+0.1
+0.2
+
+Huffman Codes:
+k : 11
+a : 0
+v : 100
+i : 101
+
+Enter the string to encode: kai
+Encoded string: 110101
