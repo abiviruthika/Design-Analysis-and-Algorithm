@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+void print(int **board, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout << board[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+bool place(int **board, int n, int row, int col) {
+    for (int i = 0; i < col; i++)
+        if (board[row][i])
+            return false;
+    for (int i = row, j = col; i >= 0 && j >= 0; i--, j--)
+        if (board[i][j])
+            return false;
+    for (int i = row, j = col; i < n && j >= 0; i++, j--)
+        if (board[i][j])
+            return false;
+    return true;
+}
+bool NQueen(int **board, int n, int col)
+{
+    if (col >= n)
+        return true;
+    for (int i = 0; i < n; i++)
+    {
+        if (place(board, n, i, col))
+        {
+            board[i][col] = 1;
+            if (NQueen(board, n, col + 1))
+                return true;
+            board[i][col] = 0;
+        }
+    }
+    return false;
+}
+int main() {
+    int n;
+    cout << "Enter number of queens: ";
+    cin >> n;
+    int **board = new int*[n];
+    for (int i = 0; i < n; i++)
+    {
+        board[i] = new int[n];
+        for (int j = 0; j < n; j++)
+            board[i][j] = 0;
+    }
+    if (NQueen(board, n, 0))
+    {
+        cout << "\nSolution:\n";
+        print(board, n);
+    }
+    else
+    {
+        cout << "No solution exists";
+    }
+    return 0;
+}
+[24bcs127@mepcolinux ex8]$c++ nqueen.cpp
+[24bcs127@mepcolinux ex8]$./a.out
+Enter number of queens: 4
+
+Solution:
+0 0 1 0
+1 0 0 0
+0 0 0 1
+0 1 0 0
+[24bcs127@mepcolinux ex8]$./a.out
+Enter number of queens: 8
+
+Solution:
+1 0 0 0 0 0 0 0
+0 0 0 0 0 0 1 0
+0 0 0 0 1 0 0 0
+0 0 0 0 0 0 0 1
+0 1 0 0 0 0 0 0
+0 0 0 1 0 0 0 0
+0 0 0 0 0 1 0 0
+0 0 1 0 0 0 0 0
