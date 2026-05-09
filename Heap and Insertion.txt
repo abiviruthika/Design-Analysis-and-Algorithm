@@ -1,0 +1,127 @@
+cat heaps.cpp
+
+#include<iostream>
+using namespace std;
+void heap(int a[], int n, int i)
+{
+    int large = i;
+    int left = 2*i + 1;
+    int right = 2*i + 2;
+    int temp;
+
+    if(left < n && a[left] > a[large])
+        large = left;
+
+    if(right < n && a[right] > a[large])
+        large = right;
+
+    if(large != i)
+    {
+        temp = a[i];
+        a[i] = a[large];
+        a[large] = temp;
+
+        heap(a, n, large);
+    }
+}
+int main()
+{
+    int n, temp;
+    cout<<"Enter no of elements: ";
+    cin>>n;
+    int a[n];
+    cout<<"Enter elements: ";
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+    }
+    for(int i=n/2-1;i>=0;i--)
+    {
+        heap(a,n,i);
+    }
+    cout << "Max Heap array: ";
+    for(int i=0; i<n; i++)
+    {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+    for(int i=n-1;i>0;i--)
+    {
+        temp = a[0];
+        a[0] = a[i];
+        a[i] = temp;
+        heap(a,i,0);
+    }
+    cout<<"After Sorting: ";
+    for(int i=0;i<n;i++)
+    {
+        cout<<a[i]<<"\t";
+    }
+    cout<<endl;
+    return 0;
+}
+[24bcs127@mepcolinux ex4]$c++ heaps.cpp
+[24bcs127@mepcolinux ex4]$./a.out
+Enter no of elements: 5
+Enter elements: 8
+2
+4
+7
+3
+Max Heap array: 8 7 4 2 3
+After Sorting: 2        3       4       7       8
+[24bcs127@mepcolinux ex4]$cat insert.cpp
+
+#include<iostream>
+using namespace std;
+int main()
+{
+   int n,v,j;
+   cout<<"Enter no of elements:";
+   cin>>n;
+   if(n<0)
+   {
+      cout<<"Entered invalued input\n";
+      cout<<"Enter again:\n";
+      cin>>n;
+   }
+   int A[n];
+   cout<<"Enter elements:\n";
+   for(int i=0;i<n;i++)
+   {
+      cin>>A[i];
+      if(A[i]<0)
+      {
+         cout<<"Entered invalued input\n";
+         cout<<"Enter again:\n";
+         cin>>A[i];
+      }
+   }
+   for(int i=1;i<n;i++)
+   {
+      v=A[i];
+      j=i-1;
+      while(j>=0 && A[j]>v)
+      {
+         A[j+1]=A[j];
+         j=j-1;
+      }
+      A[j+1]=v;
+   }
+   cout<<"After insertion sort:"<<endl;
+   for(int i=0;i<n;i++)
+      cout<<A[i]<<"  ";
+   cout<<endl;
+}
+[24bcs127@mepcolinux ex4]$c++ insert.cpp
+[24bcs127@mepcolinux ex4]$./a.out
+Enter no of elements:6
+Enter elements:
+4
+2
+7
+3
+1
+8
+After insertion sort:
+1  2  3  4  7  8
