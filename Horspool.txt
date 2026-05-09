@@ -1,0 +1,63 @@
+[24bcs127@mepcolinux ex5]$cat horspool.cpp
+#include<iostream>
+using namespace std;
+int length(char str[])
+{
+   int i=0;
+   while(str[i]!='\0')
+      i++;
+   return i;
+}
+void ShiftTable(char pattern[],int m,int table[])
+{
+   for(int i=0;i<256;i++)
+   {
+      table[i]=m;
+   }
+   for(int i=0;i<m-1;i++)
+   {
+      table[(int)pattern[i]]=m-1-i;
+   }
+}
+int Horspool(char text[],char pattern[])
+{
+   int m=length(pattern);
+   int n=length(text);
+   int table[256];
+   ShiftTable(pattern,m,table);
+   int i=m-1;
+   while(i<n)
+   {
+      int k=0;
+      while(k<m && pattern[m-1-k]==text[i-k])
+         k++;
+      if(k==m)
+      {
+         return i-m+1;
+      }
+      i=i+table[(int)text[i]];
+   }
+   return -1;
+}
+int main()
+{
+   char text[200],pattern[100];
+   cout<<"Enter the text:";
+   cin.getline(text,200);
+   cout<<"Enter the pattern:";
+   cin.getline(pattern,100);
+   int pos=Horspool(text,pattern);
+   if(pos>0)
+      cout<<"Pattern found at position "<<pos+1<<endl;
+   else
+      cout<<"Pattern not found"<<endl;
+   return 0;
+}
+[24bcs127@mepcolinux ex5]$./a.out
+Enter the text:Anime_is _my_favourite
+Enter the pattern:fav
+Pattern found at position 14
+[24bcs127@mepcolinux ex5]$./a.out
+Enter the text:Anime is_a_world
+Enter the pattern:fav
+Pattern not found
